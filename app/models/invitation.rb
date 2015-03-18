@@ -2,10 +2,10 @@ class Invitation < ActiveRecord::Base
 	belongs_to :sender, :class_name => 'User'
 	has_one :recipient, :class_name => 'User'
 
-	validate :recipient_is_not_registered
-	validate :sender_has_invitations, :if => :sender
-	before_create :generate_token
-	before_create :decrement_sender_count, :if => :sender
+#	validate :recipient_is_not_registered
+#	validate :sender_has_invitations, :if => :sender
+#	before_create :generate_token
+#	before_create :decrement_sender_count, :if => :sender
 
 	private
 
