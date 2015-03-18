@@ -1,0 +1,78 @@
+<div class="home">
+
+<div class="container">
+
+<center><%= image_tag('Stuffff.png', :class => 'img-responsive logo')%>
+
+	<h3 id="tagline">Safe. Everywhere. Organized </h3>
+	<%= button_tag "Request Invite", class: 'btn btn-primary', :'data-toggle' => 'modal', :'data-target' => '#inviteModal'%>
+				 <%= button_tag "Login", class: 'btn btn-info', :'data-toggle' => 'modal', :'data-target' => '#loginModal'%>
+</center>
+</div>
+	<footer class="footer">
+      <div class="container">
+        <h6 class="text-muted text-center">Made with care</h6>
+      </div>
+    </footer>
+</div>
+
+<div class="modal fade" id="loginModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">Login</h4>
+      </div>
+  <div class="modal-body">
+
+  <%= simple_form_for(:user, :url => user_session_path) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, class: 'form-control', :style => 'padding-left:7px' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off", class: 'form-control', :style => 'padding-left:7px' %>
+  </div>
+<div class="modal-footer">
+  <div class="actions">
+    <%= f.submit "Login", :class => 'btn btn-info' %>
+  </div>
+  <% end %>
+
+  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="inviteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">Request An Invite</h4>
+      </div>
+  <div class="modal-body">
+
+  <%= simple_form_for(Invitation.new) do |f|  %>
+  <div class="field">
+    <%= f.label :recipient_email %><br />
+    <%= f.text_field :recipient_email, autofocus: true, class: 'form-control', :style => 'padding-left:7px' %>
+  </div>
+
+<div class="modal-footer">
+  <div class="actions">
+    <%= f.submit "Submit", :class => 'btn btn-info' %>
+  </div>
+  <% end %>
+
+  </div>
+  </div>
+
+</div>
+</div>
+</div>

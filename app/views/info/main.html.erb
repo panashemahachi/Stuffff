@@ -1,0 +1,341 @@
+<!-- <%= link_to 'New Asset', new_asset_path %>-->
+
+<% gigabyte_convestion = 1000000000 %>
+<% usage = (current_user.assets.sum(:uploaded_file_file_size).to_f / gigabyte_convestion * 100).to_f %>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-info">
+  </div>
+</div>
+
+<!-- GBTT: place in JS -->
+<script>
+var usg = <%= usage %>;
+$('.progress-bar').css('width', usg+'%'); 
+</script>
+
+<div class="tab-content">
+  <div class="tab-pane active">
+
+    <div class="container">
+     <div class="content-container clearfix">
+       <div class="col-md-12">
+         <div class="col-md-8">
+           <h1 class="content-title"><%= render :partial => "breadcrumbs" %></h1>
+         </div>
+         <div class="col-md-4">
+           <ul class="menu-items">
+            <!-- Know we're within a folder -->
+  <!--          <% if @current_folder %> 
+            <li><%= link_to "Upload In Folder", new_sub_file_path(@current_folder) %>&nbsp;|</li> 
+            <li><%= link_to "New Folder", new_sub_folder_path(@current_folder) %></li> 
+            <% else %> 
+            <li><%= link_to "Upload", new_asset_path %>&nbsp;|</li> 
+            <li><%= link_to "New Folder", new_folder_path %></li> 
+            <% end %> 
+
+            <li>|&nbsp;<%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li> -->
+            <div class="dropdown" style="float:right; margin-top:-15px">
+              <button class="btn btn-success dropdown-toggle" type="button" id="account" data-toggle="dropdown" aria-expanded="true">
+                Your Account
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="account">
+
+              <li role="presentation"><%= link_to "Send Invitation (#{current_user.invitation_limit})", new_invitation_path, :role => "menuitem", :tabindex => "-1" %>
+              </li>
+              <li role="presentation"><%= link_to "Edit Your Account", "#", :role => "menuitem", :tabindex => "-1",:'data-toggle' => 'modal', :'data-target' => '#accountModal' %></li>
+                <li role="presentation"><%= link_to "Sign out",destroy_user_session_path, :method => :delete, :role => "menuitem", :tabindex => "-1"  %></li>
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <!--<input type="search" placeholder="Search stuffff" class="form-control stuff-search" /> -->
+
+      <%= form_tag root_path, :method => 'GET' do %>
+      <%= text_field_tag :search, params[:search], :placeholder => "Search stuffff", class: "form-control stuff-search"%>
+      <%= submit_tag "Search", :name => nil, :style => 'display:none' %>
+      <% end %>
+
+
+      <table class="table table-striped table-hover" id="file-list">
+  <thead>
+    <tr>
+      <th style="width:60%"><p>Name</p></th>
+      <th style="width:10%"><p>Size</p></th>
+      <th style="width:20%"><p>Last Updated</p></th>
+      <th style="width:10%"><p></p></th>
+    </tr>
+  </thead>
+  <tbody>
+<!--
+          <% @folders.each do |folder| %> 
+        <li>
+         <%= link_to browse_path(folder) do %>
+         <div class="col-md-6">
+           <div class="col-md-1">
+             <%= fa_icon "folder", :style => 'margin-left:-40px;'%>
+           </div>
+           <div class="col-md-11">
+             <span class="stuff-sender" style="margin-left:-50px"><%= folder.name %></span>
+           </div>
+         </div>
+         <div class="col-md-3">
+           <span class="stuff-subject"> - </span>
+         </div>
+         <div class="col-md-3">
+           <span class="stuff-message-preview"> - </span>
+         </div>
+         <% end %>
+       </li>
+
+       <% end %>-->
+ <% @folders.each do |folder| %> 
+    <tr>
+      <td><%= fa_icon "folder"%><span class="stuff-sender" style="margin-left:10px"><%= link_to folder.name,browse_path(folder)  %></span></td>
+      <td>--</td>
+      <td>--</td>
+      <td>
+    <div class="table-options" style="width:130%">
+      <%= button_to "Rename", rename_folder_path(folder), class: "link btn btn-info btn-sm", :style => 'float:left' %> 
+      <%= button_to "Delete", folder, :confirm => 'Are you sure to delete the folder and all of its contents?', :method => :delete, class: "link btn btn-danger btn-sm", :style => 'float:right' %>
+      </div>
+      </td>
+    </tr>
+    <% end %>
+       <% @assets.each do |asset| %> 
+
+
+
+<!--<%= link_to "Download", download_url(asset) %> 
+  <%= link_to "Delete", asset, :confirm => 'Are you sure?', :method => :delete %> -->
+  <!--<%= link_to asset.file_name, download_url(asset) %> -->
+<!--  <li>
+   <%= link_to download_url(asset) do %>
+   <div class="col-md-6">
+    <div class="col-md-1">
+     <%= fa_icon "file-pdf-o", :style => 'margin-left:-40px;'%>
+   </div>
+   <div class="col-md-11">
+     <span class="stuff-sender" style="margin-left:-50px"><%= asset.file_name%></span>
+   </div>
+ </div>
+ <div class="col-md-3">
+   <span class="stuff-subject"><%= number_to_human_size(asset.file_size, :precision => 2) %> </span>
+ </div>
+ <div class="col-md-3">
+   <span class="stuff-message-preview"><%= asset.uploaded_file_updated_at %></span>
+ </div>
+
+ <% end %>
+</li> -->
+<tr>
+      <td><%= fa_icon "file-pdf-o"%><span class="stuff-sender" style="margin-left:10px"><%= link_to asset.file_name, download_url(asset)%></span></td>
+      <td><span class="stuff-subject"><%= number_to_human_size(asset.file_size, :precision => 2) %> </span></td>
+      <td><span class="stuff-message-preview"><%= asset.uploaded_file_updated_at %></span></td>
+
+<td><div class="table-options" style="width:140%">
+<%= button_to "Download", download_url(asset), class: "link btn btn-info btn-sm", :style => 'float:left' %> 
+  <%= button_to "Delete", asset, :confirm => 'Are you sure?', :method => :delete, class: "link btn btn-danger btn-sm", :style => 'float:right'%>
+</div>
+
+      </td>
+    </tr>
+    <% end %>
+     </tbody>
+</table> 
+
+<!--
+      <div class="col-md-6">
+        
+      </div>
+      <div class="col-md-3">
+       
+     </div>
+     <div class="col-md-3">
+      
+    </div>
+
+    <div class="col-md-12" style="margin-top:-40px;">
+     <ul class="stuff-list">-->
+
+<!--
+                       <% @folders.each do |folder| %> 
+<%= link_to folder.name, browse_path(folder) %></div> 
+ - 
+ - 
+ <%= link_to "Share" %> 
+ <%= link_to "Rename", rename_folder_path(folder) %> 
+ <%= link_to "Delete", folder, :confirm => 'Are you sure to delete the folder and all of its contents?', :method => :delete %>
+        </div> 
+        <% end %>  -->
+
+<!--
+<% if @assets.count == 0 %>
+
+<center><%= fa_icon "frown-o", :style => 'font-size:10em'%></center>
+<h3 class="text-center">No files here</h3>
+<% end %> -->
+
+
+
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Hovering icons -->
+<div class="container">
+  <div class="row">
+    <div id="inbox">
+      <div class="fab btn-group show-on-hover dropup">
+        <div data-toggle="tooltip" data-placement="left" title="New File" style="margin-left: 42px;">
+          <button type="button" class="btn btn-danger btn-io dropdown-toggle" data-toggle="dropdown">
+            <span class="fa-stack fa-2x">
+             <% if @current_folder %> 
+             <%= link_to new_sub_file_path(@current_folder) do %>
+
+             <%= fa_icon "circle", class: "fa-stack-2x fab-backdrop" %>
+             <%= fa_icon "plus", class: "fa-stack-1x fa-inverse fab-primary", :style => "margin-left:-3px;" %>
+             <%= fa_icon "file-pdf-o", class: "fa-stack-1x fa-inverse fab-secondary", :style => "margin-left:-3px;" %>
+             <% end %>
+             <% else %>
+             <%= link_to new_asset_path do %>
+             <%= fa_icon "plus", class: "fa-stack-1x fa-inverse fab-primary", :style => "margin-left:-3px;" %>
+             <%= fa_icon "circle", class: "fa-stack-2x fab-backdrop" %>
+             <%= fa_icon "file-pdf-o", class: "fa-stack-1x fa-inverse fab-secondary", :style => "margin-left:-3px;" %>
+             <% end %>
+             <% end %>
+           </span>
+         </button></div>
+         <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          <% if @current_folder %> 
+          
+          <li><%= link_to "#", :'data-toggle' => 'modal', :'data-target' => '#newFolderInFolderModal' do %>
+            <%= fa_icon "folder", :'data-toggle' => 'tooltip', :'data-placement' => 'left', :title => 'New Folder' %>
+            <% end %></li>
+
+
+            <% else %>
+
+            <li><%= link_to "#", :'data-toggle' => 'modal', :'data-target' => '#newFolderModal' do %>
+              <%= fa_icon "folder", :'data-toggle' => 'tooltip', :'data-placement' => 'left', :title => 'New Folder' %>
+              <% end %></li>
+              <% end %>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="modal fade" id="accountModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">Edit Your Account</h4>
+      </div>
+  <div class="modal-body">
+
+ <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus:true, class: 'form-control'  %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
+  </div>
+
+<div class="modal-footer">
+ <div class="actions">
+    <%= f.submit "Update", class: 'btn btn-success', :style => 'float:right' %>
+  </div>
+  <% end %>
+
+  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="newFolderModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">New Folder</h4>
+      </div>
+  <div class="modal-body">
+
+ <%= simple_form_for(Folder.new) do |f| %>
+ <div class="field">
+    <%= f.label :name %><br /> 
+    <%= f.text_field :name, autofocus: true, class: 'form-control', :style => 'padding-left:7px'  %> 
+ </div>
+   <%= f.hidden_field :parent_id %> 
+   <div class="modal-footer">
+ <div class="actions">
+   <%= f.submit "Create Folder", class: "btn btn-success" %> 
+ </div>
+  <% end %>
+
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- GBTT get this to work -->
+<div class="modal fade" id="newFolderInFolderModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">New Folder</h4>
+      </div>
+  <div class="modal-body">
+
+ <%= simple_form_for(Folder.new) do |f| %>
+ <div class="field">
+    <%= f.label :name %><br /> 
+    <%= f.text_field :name, autofocus: true, class: 'form-control', :style => 'padding-left:7px'  %> 
+ </div>
+   <%= f.hidden_field :parent_id %> 
+   <div class="modal-footer">
+ <div class="actions">
+   <%= f.submit "Create Folder", class: "btn btn-success" %> 
+ </div>
+  <% end %>
+
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>

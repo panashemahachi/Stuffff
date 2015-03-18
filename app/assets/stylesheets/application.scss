@@ -1,0 +1,97 @@
+@import "assets";
+@import "folders";
+@import "info";
+@import "font-awesome";
+//@import "bootstrap-sprockets";
+
+$brand_blue: #3498db;
+$brand_blue_faded:rgba(52, 152, 219,0.5);
+$brand-success: $brand_blue;
+
+// First import cerulean variables
+@import "bootswatch/flatly/variables";
+
+// Then bootstrap itself
+@import "bootstrap";
+
+// Bootstrap body padding for fixed navbar
+
+// And finally bootswatch style itself
+@import "bootswatch/flatly/bootswatch";
+
+// Whatever application styles you have go last
+//@import "base";
+
+/*Forms setup*/
+.form-control {
+    border-radius:0;
+    box-shadow:none;
+    height:auto;
+}
+.float-label{
+    font-size:10px;
+}
+input[type="text"].form-control,
+input[type="search"].form-control{
+    border:none;
+    border-bottom:1px dotted #CFCFCF;
+}
+textarea {
+    border:1px dotted #CFCFCF!important;
+    height:130px!important;
+}
+/*Content Container*/
+.content-container {
+    background-color:#fff;
+    margin-bottom:20px;
+}
+h1.content-title{
+    float:left;
+}
+
+/*stuff list*/
+
+ul.stuff-list{
+    padding:0;
+    margin:0;
+    list-style:none;
+    margin-top:30px;
+}
+ul.stuff-list li a{
+    display:block;
+    border-bottom:1px dotted #CFCFCF;
+    padding:20px;
+    text-decoration:none;
+}
+ul.stuff-list li:last-child a{
+    border-bottom:none;
+}
+ul.stuff-list li a:hover{
+    background-color:$brand_blue_faded;
+}
+ul.stuff-list li span{
+    display:block;
+}
+ul.stuff-list li span.stuff-sender{
+    font-weight:600;
+    color:#8F8F8F;
+}
+ul.stuff-list li span.stuff-subject{
+    color:#8C8C8C;
+}
+ul.stuff-list li span.stuff-message-preview{
+    display:block;
+    color:#A8A8A8;
+}
+.stuff-search{
+    border-bottom-color:#7FBCC9!important; 
+}
+
+.menu-items{
+	list-style-type:none;
+	margin-top:50px;
+}
+
+.menu-items li{
+	display:inline;
+}

@@ -1,0 +1,11 @@
+development: 
+  access_key_id: "AKIAJ7VZNQCDEHHFPJVQ" 
+  secret_access_key: "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" 
+  
+staging: 
+  access_key_id: "AKIAJ7VZNQCDEHHFPJVQ" 
+  secret_access_key: "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" 
+  
+production: 
+  access_key_id: "AKIAJ7VZNQCDEHHFPJVQ" 
+  secret_access_key: "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"
