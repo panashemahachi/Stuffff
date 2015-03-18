@@ -1,11 +1,11 @@
 development: 
-  access_key_id: "AKIAJ7VZNQCDEHHFPJVQ" 
-  secret_access_key: "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" 
+  access_key_id:  ENV['S3_KEY']
+  secret_access_key: ENV['S3_SECRET']
   
 staging: 
-  access_key_id: "AKIAJ7VZNQCDEHHFPJVQ" 
-  secret_access_key: "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" 
+  access_key_id:  ENV['S3_KEY']
+  secret_access_key: ENV['S3_SECRET']
   
 production: 
-  access_key_id: "AKIAJ7VZNQCDEHHFPJVQ" 
-  secret_access_key: "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"
+  access_key_id:  ENV['S3_KEY']
+  secret_access_key: ENV['S3_SECRET']
